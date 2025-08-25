@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block start %}<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="login-form w-100 p-5 shadow-lg border rounded" style="max-width: 600px; background-color: #fff;">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+    <form action=""  method="POST">
+        {% csrf_token %}
+ <h2 class="text-center ">Log In</h2>
+<div class="form-group">
+    <input type="text" placeholder="Username" class="form-control mt-3" name="username" required>
+</div>
+<div class="form-group mt-4">
+    <input type="password" placeholder="Password" class="form-control" name="password" required>
+</div>
+<div class="d-grid mt-3">
+    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+</div>
+
+
+</form>
+<p class="text-center mt-3"><a href="{% url 'register_page'%}">Create a Account</a></p>
+</div>
+</div>
+  
+{% endblock %}

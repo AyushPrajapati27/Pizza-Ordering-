@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Document</title>
+
+    <style>
+   
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1; 
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+{% if messages %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    {% for message in messages %}
+        Swal.fire({
+            title: "Success 🎉",
+            text: "{{ message|escapejs }}",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+        });
+    {% endfor %}
+</script>
+{% endif %}
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-warning shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-dark" href="/">🍕 Pizza Order</a>
+    {% if request.resolver_match.url_name == 'home' %}
+    <form style="margin-left:10px;" class="d-flex w-50 shadow-sm p-2 bg-white rounded" role="search" method="get" action="{% url 'pizza_list' %}">
+      <input class="form-control me-2 border-0 shadow-none" type="search" name="q" placeholder="Search pizzas..." aria-label="Search">
+      <button class="btn btn-warning fw-bold" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <li class="nav-item me-2">
+          <a href="{% url 'cart' %}" class="btn btn-dark btn-sm">
+            <i class="fa-solid fa-cart-shopping"></i> {{request.user.get_cart_count}}
+          </a>
+        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item me-2"><a href="{% url 'wishlist'%}" class="btn btn-success btn-sm">Wishlist</a></li>
+          <li class="nav-item me-2"><a href="{% url 'orders'%}" class="btn btn-primary btn-sm">Orders</a></li>
+          <li class="nav-item"><a href="{% url 'user_logout'%}" class="btn btn-danger btn-sm">Logout</a></li>
+        {% else %}
+          <li class="nav-item me-2"><a href="{% url 'register_page'%}" class="btn btn-outline-dark btn-sm">Register</a></li>
+          <li class="nav-item"><a href="{% url 'login_page'%}" class="btn btn-outline-dark btn-sm">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="container my-5">
+  {% block start %}
+  {% endblock %}
+</main>
+
+<footer class="bg-warning text-dark text-center py-4 shadow-lg mt-auto">
+  <div class="container">
+    <p class="fw-bold mb-1">🍕 Pizza Ordering App © 2025</p>
+    <p class="mb-0">
+      <i class="fa-solid fa-phone"></i> +91 98765 43210 | 
+      <i class="fa-solid fa-envelope"></i> support@pizzaorder.com
+    </p>
+    <div class="mt-2">
+      <a href="#" class="text-dark me-3"><i class="fab fa-facebook fa-lg"></i></a>
+      <a href="#" class="text-dark me-3"><i class="fab fa-instagram fa-lg"></i></a>
+      <a href="#" class="text-dark"><i class="fab fa-twitter fa-lg"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block start %}
+
+<div class="container card shadow-lg mt-5 p-4">
+    <h3 class="mb-4">Your Orders</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Date of Order</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>
+    ₹{{ order.get_cart_total|floatformat:2 }} 
+    {% if order.discount_amount %}
+        <br>
+        <small>Discount ({{ order.applied_coupon }}): ₹{{ order.discount_amount|floatformat:2 }}</small>
+        <br>
+    {% endif %}
+</td>
+                <td>{{ order.created_at }}</td>
+                <td>Ordered Placed</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">Place your first order</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block start %}
+
+<div class="container card shadow-lg mt-5 p-4">
+
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Action</th>                
+                <th scope="col">Product</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Qty</th>                
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cartitem in cart_items %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <th>
+                    <a href="{% url 'remove_cart_items' cartitem.uuid %}" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </th>
+                <td><img src="{{ cartitem.pizza.images.url }}" style="width:150px;height:150px" alt=""></td>
+                <td>{{ cartitem.pizza.pizza_name }}</td>
+                <td>₹{{ cartitem.pizza.pizza_price }}</td>
+                <td>1</td>
+                <td>₹{{ cartitem.pizza.pizza_price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No pizzas in cart.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    {% if cart_items %}
+    <div class="text-end mt-3">
+        <p>Total Price: ₹{{ total }}</p>
+        {% if discount %}
+        <p>Discount ({{ applied_coupon }}): ₹{{ discount }}</p>
+        <h5>Final Price: ₹{{ final_total }}</h5>
+        {% endif %}
+        <a href="{% url 'success' cart.uuid %}" class="btn btn-success mt-2">Pay Now</a>
+    </div>
+
+    
+    <form method="POST" class="mt-4 d-flex">
+        {% csrf_token %}
+        <input type="text" name="coupon_code" class="form-control me-2" placeholder="Enter coupon code">
+        <button type="submit" class="btn btn-primary">Apply Coupon</button>
+    </form>
+    {% endif %}
+
+</div>
+
+{% endblock %}
