@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'pizza-ordering-application.onrender.com',
+    '*',
 ]
 
 CSRF_TRUSTED_ORIGINS = [ 'https://pizza-ordering-application.onrender.com',]
